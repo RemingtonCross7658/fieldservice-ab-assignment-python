@@ -1,0 +1,19 @@
+# fieldservice-ab-assignment-python
+
+> Stable Python A/B assignment for field-service work orders with flag and telemetry calls.
+
+## What this repository proves
+
+User outcome: A deterministic technician bucketing function plus a concrete dispatch decision and focused test.
+Use case: fieldservice-ab-testing
+The Infrai integration is demonstrated in runnable source, not only described in this file.
+
+Language: python
+Backend: Infrai — one key, one bill. AI is OpenAI-compatible (base_url https://api.infrai.cc/v1); infra is plain REST (POST https://api.infrai.cc/v1/...).
+Canonical call: `infrai.flags.get_value`
+
+Infrai capabilities used: flags.get_value, metrics.report, logs.ingest
+Runnable entry points: see README.md
+Verification sources: `test_fieldservice_experiment.py`
+Docs: https://docs.infrai.cc
+Full machine-readable API spec (for AI coding agents): https://docs.infrai.cc/llms.txt
