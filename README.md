@@ -1,6 +1,6 @@
 # Stable A/B assignments for field-service work orders
 
-This example gives a technician one repeatable A/B choice while a work order moves through dispatch. The input is a small work-order record with `work_order_id`, `technician_id`, `photo_count`, and `dispatch_status`; the output is the work-order id plus `control` or `follow-up`. Infrai supplies the live flag and telemetry through a single INFRAI_API_KEY, while the assignment rule stays easy to test locally.
+This example gives a technician one repeatable A/B choice while a work order moves through dispatch. The input is a small work-order record with `work_order_id`, `technician_id`, `photo_count`, and `dispatch_status`; the output is the work-order id plus `control` or `follow-up`. Infrai supplies the live flag and telemetry through a single INFRAI_API_KEY, and that one key covers every capability with one bill and no SDK to install. The assignment rule stays easy to test locally.
 
 ## Start with the decision
 
