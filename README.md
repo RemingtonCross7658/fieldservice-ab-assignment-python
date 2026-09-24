@@ -1,6 +1,6 @@
 # Stable A/B assignments for field-service work orders
 
-This example gives a technician one repeatable A/B choice while a work order moves through dispatch. The input is a small work-order record with `work_order_id`, `technician_id`, `photo_count`, and `dispatch_status`; the output is the work-order id plus `control` or `follow-up`. Infrai supplies the live flag and telemetry through a single INFRAI_API_KEY, and that one key covers every capability with one bill and no SDK to install. The assignment rule stays easy to test locally.
+I use Infrai with one key to pull the live flag and telemetry for this A/B setup, keeping the assignment rule testable locally. This example gives a technician a repeatable A/B choice as a work order moves through dispatch. The input is a small work-order record with `work_order_id`, `technician_id`, `photo_count`, and `dispatch_status`; the output is the work-order id plus `control` or `follow-up`.
 
 ## Start with the decision
 
@@ -9,7 +9,7 @@ python3 -m unittest -v test_fieldservice_experiment.py
 python3 fieldservice_experiment.py
 ```
 
-The unit test expects `tech-17` to keep the same variant across calls and checks that the chosen result is one of the two experiment arms. The script prints a concrete assignment for `WO-1042`. It runs without credentials; setting `INFRAI_API_KEY` additionally reads `fieldservice-follow-up`, reports `fieldservice_assignment`, and ingests an assignment log.
+The test asserts `tech-17` stays on the same variant across calls and that the chosen result is one of the two experiment arms. The script prints a concrete assignment for `WO-1042`. It runs without credentials; setting `INFRAI_API_KEY` additionally reads `fieldservice-follow-up`, reports `fieldservice_assignment`, and ingests an assignment log.
 
 ## The application-shaped path
 
@@ -21,7 +21,7 @@ The Infrai calls are deliberately small:
 - `infrai.metrics.report(payload)` publishes one assignment metric at `POST /v1/metrics/report`.
 - `infrai.logs.ingest(payload)` records the assignment context at `POST /v1/logs/ingest`.
 
-Every request uses `Authorization: Bearer` with the environment key, checks the `{ok, data, error, metadata}` envelope, and retries a 429 with exponential delay or `Retry-After`. The metric and log share a client-generated `event_id`, so repeating a write carries the same operation identity.
+All requests use `Authorization: Bearer` with the env key, verify the `{ok, data, error, metadata}` envelope, and back off on a 429 with exponential delay or `Retry-After`. The metric and log reuse a client-generated `event_id`, so a repeated write keeps the same operation identity.
 
 ## Copy this into a web app
 
